@@ -2,10 +2,11 @@
 
 @section('content')
     <div class="bg-white p-6 rounded shadow-md">
-        <h1 class="text-2xl font-bold mb-4">Create New Customer</h1>
+        <h1 class="text-2xl font-bold mb-4">Create Edit Customer</h1>
 
-        <form action="{{ route('customers.store') }}" method="POST">
+        <form action="{{ route('customers.update', $customer->id) }}" method="POST">
             @csrf
+            @method('PUT')
             <div class="mb-4">
                 <label for="firstname" class="block text-gray-700 text-sm font-bold mb-2">Firstname*:</label>
                 <input type="text" name="firstname" id="firstname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('firstname') border-red-500 @enderror" value="{{ old('firstname', $customer->firstname) }}" placeholder="Enter Firstname" required>

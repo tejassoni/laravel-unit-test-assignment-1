@@ -1,43 +1,81 @@
-<x-app-layout>
-    <!-- Header Section Starts -->
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Show - Customer Details') }}
-        </h2>
-    </x-slot>
-    <!-- Header Section Ends -->
+@extends('layouts.app')
 
-    <!-- Show Div Section Starts -->
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
-                <a title="back" href="{{ route('users.index') }}"
-                    class="inline-flex items-center px-4 py-2 mb-4 text-xs font-semibold tracking-widest text-black uppercase transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700 focus:outline-none focus:border-green-700 focus:shadow-outline-gray disabled:opacity-25">
-                    Go back
-                </a>
-                <div class="mb-4">
-                    <label for="name"
-                    class="block mb-2 text-sm font-bold text-gray-700"><b>{{ __('User name') }} : </b><span>{{ $user->name }}</span> </label> 
-                </div>
-                <div class="mb-4">
-                    <label for="email"
-                    class="block mb-2 text-sm font-bold text-gray-700"><b>{{ __('User email') }} : </b><span>{{ $user->email }}</span> </label> 
-                </div>
+@section('content')
+    <div class="bg-white p-6 rounded shadow-md">
+        <h1 class="text-2xl font-bold mb-6">Customer Details: {{ $customer->firstname }} {{ $customer->lastname }}</h1>
 
-
-                <div class="mb-4">
-                    <label for="textrole" class="block mb-2 text-sm font-bold text-gray-700">Selected Role</label>
-                    <select name="roles" id="roles"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        multiple readonly disabled>
-                        @foreach ($user->getRoleNames() as $v)
-                            <option value="{{ $v }}" selected>{{ $v }}</option>
-                        @endforeach
-                    </select>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{-- Firstname --}}
+            <div class="mb-4">
+                <p class="block text-gray-700 text-sm font-bold mb-2">Firstname:</p>
+                <p class="text-gray-900 text-lg">{{ $customer->firstname }}</p>
             </div>
+
+            {{-- Lastname --}}
+            <div class="mb-4">
+                <p class="block text-gray-700 text-sm font-bold mb-2">Lastname:</p>
+                <p class="text-gray-900 text-lg">{{ $customer->lastname }}</p>
+            </div>
+
+            {{-- Email --}}
+            <div class="mb-4">
+                <p class="block text-gray-700 text-sm font-bold mb-2">Email:</p>
+                <p class="text-gray-900 text-lg">{{ $customer->email }}</p>
+            </div>
+
+            {{-- Mobile --}}
+            <div class="mb-4">
+                <p class="block text-gray-700 text-sm font-bold mb-2">Mobile:</p>
+                <p class="text-gray-900 text-lg">{{ $customer->mobile }}</p>
+            </div>
+
+            {{-- Gender Field --}}
+            <div class="mb-4">
+                <p class="block text-gray-700 text-sm font-bold mb-2">Gender:</p>
+                <p class="text-gray-900 text-lg capitalize">{{ $customer->gender }}</p> {{-- Capitalize for display --}}
+            </div>
+
+            {{-- Address Field --}}
+            <div class="mb-6 col-span-1 md:col-span-2"> {{-- Make address span two columns on medium screens --}}
+                <p class="block text-gray-700 text-sm font-bold mb-2">Address:</p>
+                <p class="text-gray-900 text-lg break-words">{{ $customer->address ?? 'N/A' }}</p>
+            </div>
+
+            {{-- Hobbies Field --}}
+            <div class="mb-4 col-span-1 md:col-span-2">
+                <p class="block text-gray-700 text-sm font-bold mb-2">Hobbies:</p>
+                @if (!empty($customer->hobbies))
+                    @php
+                        // Ensure hobbies is an array for iteration, even if it's stored as null/empty
+                        $displayHobbies = is_array($customer->hobbies) ? $customer->hobbies : json_decode($customer->hobbies ?? '[]', true);
+                    @endphp
+                    <ul class="list-disc list-inside text-gray-900 text-lg">
+                        @forelse ($displayHobbies as $hobby)
+                            <li>{{ $hobby }}</li>
+                        @empty
+                            <li>No hobbies selected.</li>
+                        @endforelse
+                    </ul>
+                @else
+                    <p class="text-gray-600 text-lg">No hobbies selected.</p>
+                @endif
+            </div>
+        </div> {{-- End of grid --}}
+
+        <div class="mt-8 flex space-x-2"> {{-- Added flex and space-x-2 for button spacing --}}
+            <a href="{{ route('customers.edit', $customer->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Edit Customer
+            </a>
+            <a href="{{ route('customers.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Back to List
+            </a>
+            <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Delete Customer
+                </button>
+            </form>
         </div>
     </div>
-    <!-- Show Div Section Ends -->
-
-</x-app-layout>
+@endsection

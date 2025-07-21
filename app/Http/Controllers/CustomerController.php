@@ -31,11 +31,11 @@ class CustomerController extends Controller
     {
         $validatedData = $request->validate([
             'firstname' => 'required|string|max:255', 
-            'lastname' => 'required|string|max:255', // example
-            'email' => 'required|email|unique:customers,email', // example
-            'mobile' => 'required|string|max:13', // your existing field
-            'address' => 'nullable|string', // your existing field
-            'gender' => 'required|in:male,female', // Validation for gender
+            'lastname' => 'required|string|max:255', 
+            'email' => 'required|email|unique:customers,email',
+            'mobile' => 'required|string|max:13',
+            'address' => 'nullable|string',
+            'gender' => 'required|in:male,female', 
             'hobbies' => 'nullable|array', // Hobbies should be an array
             'hobbies.*' => 'string|max:50', // Each hobby should be a string
         ]);
@@ -55,7 +55,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return view('customer.show', compact('customer'));
     }
 
     /**
@@ -71,7 +71,24 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+         $validatedData = $request->validate([
+            'firstname' => 'required|string|max:255', 
+            'lastname' => 'required|string|max:255', 
+            'email' => 'required|email|unique:customers,email,' . $customer->id,
+            'mobile' => 'required|string|max:13',
+            'address' => 'nullable|string',
+            'gender' => 'required|in:male,female', 
+            'hobbies' => 'nullable|array', // Hobbies should be an array
+            'hobbies.*' => 'string|max:50', // Each hobby should be a string
+        ]);
+
+        if (!isset($validatedData['hobbies'])) {
+            $validatedData['hobbies'] = [];
+        }
+
+        $customer->update($validatedData); // Update method also uses casting
+
+        return redirect()->route('customers.index')->with('success', 'Customer updated successfully!');
     }
 
     /**
@@ -79,6 +96,8 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+        return redirect()->route('customers.index')
+                ->withSuccess('Customer Deleted Successfully.');
     }
 }

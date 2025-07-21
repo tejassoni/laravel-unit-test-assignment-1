@@ -32,12 +32,18 @@
                                 <td class="text-center">{{ $customer->mobile }}</td>
                                 <td class="text-center">{{ $customer->gender }}</td>
                         <td>
+                            <div class="flex space-x-2"> {{-- Add this flex container with space-x-2 --}}
                             <a href="{{ route('customers.edit', $customer->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded text-sm">Edit</a> 
-                            <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task?');">
+                            <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this Customer?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="bg-red-500 hovesr:bg-red-600 text-white py-1 px-3 rounded text-sm">Delete</button>
                             </form>
+                            <a title="show" href="{{ route('customers.show', $customer->id) }}"
+                                                    class="bg-green-500 hovesr:bg-red-600 text-white py-1 px-3 rounded text-sm">
+                                                    Show
+                             </a>
+                              </div> {{-- End of flex container --}}
                         </td>
                     </tr>    
                 @endforeach
