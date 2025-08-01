@@ -91,10 +91,10 @@
             </div>       
 
             <div class="flex items-center justify-between">
-                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Edit Customer
+                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline btn-sm">
+                    Update
                 </button>
-                <a href="{{ route('customers.index') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded text-sm">
+                <a href="{{ route('customers.index') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded text-sm btn-sm">
                     Cancel
                 </a>
             </div>

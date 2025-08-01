@@ -37,10 +37,10 @@
                             <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this Customer?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="bg-red-500 hovesr:bg-red-600 text-white py-1 px-3 rounded text-sm">Delete</button>
+                                <button type="submit" class="bg-red-500 hovesr:bg-red-600 text-white py-1 px-3 rounded text-sm btn-sm">Delete</button>
                             </form>
                             <a title="show" href="{{ route('customers.show', $customer->id) }}"
-                                                    class="bg-green-500 hovesr:bg-red-600 text-white py-1 px-3 rounded text-sm">
+                                                    class="bg-green-500 hovesr:bg-red-600 text-white py-1 px-3 rounded text-sm btn-sm">
                                                     Show
                              </a>
                               </div> {{-- End of flex container --}}

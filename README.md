@@ -6,6 +6,9 @@ This document outlines the setup and usage of PHPUnit for unit and feature testi
 
 ---
 
+php artisan route:list
+php artisan list
+
 ### Understanding Test Types
 
 Laravel supports two primary types of tests: Unit Tests and Feature/Integration Tests.
@@ -101,7 +104,6 @@ The `phpunit.xml` file is the configuration file for PHPUnit, the default testin
             <env name="MAIL_MAILER" value="array"/>
             <env name="QUEUE_CONNECTION" value="sync"/>
             <env name="SESSION_DRIVER" value="array"/>
-            <env name="TELESCOPE_ENABLED" value="false"/>
         </php>
         ```
 
@@ -135,6 +137,30 @@ The `phpunit.xml` file is the configuration file for PHPUnit, the default testin
         `coverage-report/index.html`
 
 ---
+
+Enable Coverage
+sudo apt update
+sudo apt upgrade -y
+
+Check you current php installed version and install xdebug accordingly
+php -v
+
+Install Xdebug
+sudo apt install php8.2-xdebug -y
+
+Locate your PHP CLI configuration file
+sudo nano /etc/php/8.2/mods-available/xdebug.ini
+
+zend_extension=xdebug.so
+xdebug.mode=develop,debug,coverage
+xdebug.start_with_request=yes
+
+Then, to specifically check the Xdebug configuration, run:
+php -i | grep xdebug.mode
+
+xdebug.mode => develop,debug,coverage => develop,debug,coverage
+
+laravel-unit-test-assignment-1/coverage-report/index.html
 
 ### General Notes for Testing
 
@@ -170,7 +196,7 @@ The `phpunit.xml` file is the configuration file for PHPUnit, the default testin
     | `$this->actingAs($user)`             | Simulating an authenticated user         |
     | `factory()` or `Model::factory()`   | Generating test models using model factories |
 
-* **Database Testing:**
+* **Database Configuration Testing:**
     * Use Laravel's in-memory SQLite DB for fast and isolated tests:
         ```xml
         <env name="DB_CONNECTION" value="sqlite"/>

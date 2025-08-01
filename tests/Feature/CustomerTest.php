@@ -332,7 +332,7 @@ class CustomerTest extends TestCase
         $response = $this->post(route('customers.store'), $customerInvalidData);
         // Assert that the new customer (with the duplicate email) was NOT stored in the database
         $this->assertDatabaseMissing('customers', [
-            'firstname' => 'EmailExist', // Assert that this specific record was not created
+            'email' => 'existing123@example.com', // Assert that this specific record was not created
         ]);
         // Assert that the response redirects back
         $response->assertRedirect();
